@@ -101,26 +101,46 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <a href="{{ route('docente.notas.create') }}" class="btn btn-primary w-100">
                                 <i class="bi bi-plus-circle"></i> Registrar Nota
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <a href="{{ route('docente.notas.index') }}" class="btn btn-success w-100">
                                 <i class="bi bi-list-check"></i> Ver Notas
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <a href="{{ route('docente.asignaturas.index') }}" class="btn btn-info w-100">
                                 <i class="bi bi-book"></i> Mis Asignaturas
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <a href="{{ route('docente.auditorias.index') }}" class="btn btn-warning w-100">
+                        <div class="col-md-2 mb-2">
+                            <a href="{{ route('docente.asignaturas.create') }}" class="btn btn-primary w-100">
+                                <i class="bi bi-plus-square"></i> Nueva Asignatura
+                            </a>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <a href="{{ route('docente.estudiantes.index') }}" class="btn btn-warning w-100">
+                                <i class="bi bi-people"></i> Estudiantes
+                            </a>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <a href="{{ route('docente.estudiantes.create') }}" class="btn btn-primary w-100">
+                                <i class="bi bi-person-plus"></i> Nuevo Estudiante
+                            </a>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <a href="{{ route('docente.auditorias.index') }}" class="btn btn-secondary w-100">
                                 <i class="bi bi-file-text"></i> Auditorías
                             </a>
                         </div>
+                        <!-- <div class="col-md-2 mb-2">
+                            <a href="{{ route('profile.edit') }}" class="btn btn-secondary w-100">
+                                <i class="bi bi-person-gear"></i> Mi Perfil
+                            </a>
+                        </div> -->
                     </div>
                 </div>
             </div>

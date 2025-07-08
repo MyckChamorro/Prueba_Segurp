@@ -45,6 +45,16 @@
                                     <li><a class="dropdown-item" href="{{ route('docente.asignaturas.create') }}">Nueva Asignatura</a></li>
                                 </ul>
                             </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="estudiantesDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-people"></i> Estudiantes
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('docente.estudiantes.index') }}">Ver Estudiantes</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('docente.estudiantes.create') }}">Registrar Estudiante</a></li>
+                                </ul>
+                            </li>
                             
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="notasDropdown" role="button" data-bs-toggle="dropdown">

@@ -25,6 +25,9 @@ Route::middleware(['auth', 'verified', 'role:docente'])->group(function () {
         // Gestión de asignaturas
         Route::resource('asignaturas', \App\Http\Controllers\AsignaturaController::class);
         
+        // Gestión de estudiantes
+        Route::resource('estudiantes', \App\Http\Controllers\EstudianteController::class);
+        
         // Gestión de notas
         Route::resource('notas', \App\Http\Controllers\NotaController::class);
         
@@ -33,7 +36,7 @@ Route::middleware(['auth', 'verified', 'role:docente'])->group(function () {
         Route::post('asignaturas/{asignatura}/estudiantes', [\App\Http\Controllers\AsignaturaController::class, 'asignarEstudiante'])->name('asignaturas.asignar-estudiante');
         
         // Rutas para obtener estudiantes por AJAX
-        Route::get('asignaturas/{asignatura}/estudiantes-json', [\App\Http\Controllers\AsignaturaController::class, 'estudiantesJson'])->name('asignaturas.estudiantes.json');
+        Route::get('asignaturas/{asignatura}/estudiantes-json', [\App\Http\Controllers\AsignaturaController::class, 'estudiantesJson'])->name('asignaturas.estudiantes-json');
         
         // Auditorías
         Route::get('auditorias', [\App\Http\Controllers\AuditoriaController::class, 'index'])->name('auditorias.index');
