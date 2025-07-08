@@ -85,44 +85,52 @@
                                                class="btn btn-sm btn-outline-warning" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteModal{{ $estudiante->id }}" 
-                                                    title="Eliminar">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            @if($estudiante->id !== auth()->id())
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteModal{{ $estudiante->id }}" 
+                                                        title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            @else
+                                                <span class="btn btn-sm btn-outline-secondary disabled" title="No puedes eliminar tu propia cuenta">
+                                                    <i class="fas fa-user-shield"></i>
+                                                </span>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
 
-                                <!-- Modal de confirmación para eliminar -->
-                                <div class="modal fade" id="deleteModal{{ $estudiante->id }}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Confirmar eliminación</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ¿Está seguro de que desea eliminar al estudiante 
-                                                <strong>{{ $estudiante->name }}</strong>?
-                                                <br><br>
-                                                <small class="text-muted">
-                                                    Esta acción no se puede deshacer. Solo se puede eliminar si no tiene notas registradas.
-                                                </small>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <form action="{{ route('docente.estudiantes.destroy', $estudiante) }}" 
-                                                      method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                </form>
+                                @if($estudiante->id !== auth()->id())
+                                    <!-- Modal de confirmación para eliminar -->
+                                    <div class="modal fade" id="deleteModal{{ $estudiante->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Confirmar eliminación</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Está seguro de que desea eliminar al estudiante 
+                                                    <strong>{{ $estudiante->name }}</strong>?
+                                                    <br><br>
+                                                    <small class="text-muted">
+                                                        Esta acción no se puede deshacer. Solo se puede eliminar si no tiene notas registradas.
+                                                    </small>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    <form action="{{ route('docente.estudiantes.destroy', $estudiante) }}" 
+                                                          method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>

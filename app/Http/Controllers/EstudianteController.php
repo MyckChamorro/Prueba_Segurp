@@ -50,7 +50,8 @@ class EstudianteController extends Controller
             'estado' => 'activo',
         ]);
 
-        // El rol estudiante se asigna automáticamente en el modelo User
+        // Asignar explícitamente el rol de estudiante
+        $user->assignRole('estudiante');
         
         return redirect()->route('docente.estudiantes.index')
             ->with('success', 'Estudiante registrado exitosamente');
@@ -118,15 +119,22 @@ class EstudianteController extends Controller
             abort(404);
         }
         
+        // Verificar que no sea el usuario activo
+        if ($estudiante->id === auth()->id()) {
+            return redirect()->route('docente.estudiantes.index')
+                ->with('error', 'No puedes eliminar tu propia cuenta');
+        }
+        
         // Verificar si tiene notas registradas
         if ($estudiante->notas()->count() > 0) {
             return redirect()->route('docente.estudiantes.index')
                 ->with('error', 'No se puede eliminar el estudiante porque tiene notas registradas');
         }
 
+        $nombre = $estudiante->name;
         $estudiante->delete();
 
         return redirect()->route('docente.estudiantes.index')
-            ->with('success', 'Estudiante eliminado exitosamente');
+            ->with('success', "Estudiante {$nombre} eliminado exitosamente");
     }
 }

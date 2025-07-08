@@ -103,10 +103,17 @@ class AsignaturaController extends Controller
                 ->with('error', 'No se puede eliminar la asignatura porque tiene notas registradas');
         }
 
+        // Verificar si tiene estudiantes asignados
+        if ($asignatura->estudiantes()->count() > 0) {
+            return redirect()->route('docente.asignaturas.index')
+                ->with('error', 'No se puede eliminar la asignatura porque tiene estudiantes inscritos');
+        }
+
+        $nombre = $asignatura->nombre;
         $asignatura->delete();
 
         return redirect()->route('docente.asignaturas.index')
-            ->with('success', 'Asignatura eliminada exitosamente');
+            ->with('success', "Asignatura {$nombre} eliminada exitosamente");
     }
 
     /**
