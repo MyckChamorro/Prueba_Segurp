@@ -11,7 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Registrar middleware personalizado
+        $middleware->alias([
+            'verificar.estado.activo' => \App\Http\Middleware\VerificarEstadoActivo::class,
+        ]);
+        
+        // Aplicar middleware globalmente a rutas web autenticadas
+        $middleware->web(append: [
+            \App\Http\Middleware\VerificarEstadoActivo::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

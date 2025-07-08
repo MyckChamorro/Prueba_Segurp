@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'estado',
+        'motivo_inactivo',
     ];
 
     /**
@@ -44,5 +47,65 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relación many-to-many con Asignatura
+     */
+    public function asignaturas()
+    {
+        return $this->belongsToMany(Asignatura::class);
+    }
+
+    /**
+     * Relación one-to-many con Nota (como estudiante)
+     */
+    public function notas()
+    {
+        return $this->hasMany(Nota::class, 'estudiante_id');
+    }
+
+    /**
+     * Relación one-to-many con Auditoria
+     */
+    public function auditorias()
+    {
+        return $this->hasMany(Auditoria::class, 'usuario_id');
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            // Asignar automáticamente el rol de estudiante a usuarios recién registrados
+            if (!$user->hasAnyRole(['docente', 'estudiante'])) {
+                $user->assignRole('estudiante');
+            }
+            
+            // Registrar auditoría de creación de usuario
+            Auditoria::create([
+                'usuario_id' => $user->id,
+                'accion' => 'crear_usuario',
+                'motivo' => "Usuario registrado: {$user->name} ({$user->email})",
+            ]);
+        });
+    }
+
+    /**
+     * Scope para usuarios activos
+     */
+    public function scopeActivos($query)
+    {
+        return $query->where('estado', 'activo');
+    }
+
+    /**
+     * Scope para usuarios inactivos
+     */
+    public function scopeInactivos($query)
+    {
+        return $query->where('estado', 'inactivo');
     }
 }
