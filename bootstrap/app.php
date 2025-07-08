@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Registrar middleware personalizado
         $middleware->alias([
             'verificar.estado.activo' => \App\Http\Middleware\VerificarEstadoActivo::class,
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
         
         // Aplicar middleware globalmente a rutas web autenticadas

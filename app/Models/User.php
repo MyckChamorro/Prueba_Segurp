@@ -79,17 +79,22 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::created(function (User $user) {
-            // Asignar automáticamente el rol de estudiante a usuarios recién registrados
-            if (!$user->hasAnyRole(['docente', 'estudiante'])) {
-                $user->assignRole('estudiante');
+            // Verificar que los roles existan antes de asignar
+            if (\Spatie\Permission\Models\Role::where('name', 'estudiante')->exists()) {
+                // Asignar automáticamente el rol de estudiante a usuarios recién registrados
+                if (!$user->hasAnyRole(['docente', 'estudiante'])) {
+                    $user->assignRole('estudiante');
+                }
             }
             
-            // Registrar auditoría de creación de usuario
-            Auditoria::create([
-                'usuario_id' => $user->id,
-                'accion' => 'crear_usuario',
-                'motivo' => "Usuario registrado: {$user->name} ({$user->email})",
-            ]);
+            // Registrar auditoría de creación de usuario (solo si hay usuario autenticado)
+            if (auth()->check()) {
+                \App\Models\Auditoria::create([
+                    'usuario_id' => auth()->id(),
+                    'accion' => 'crear_usuario',
+                    'motivo' => "Usuario registrado: {$user->name} ({$user->email})",
+                ]);
+            }
         });
     }
 
